@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="21.0.0">
+  <diagram id="d1" name="Clean Architecture Layers">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="EBook Library — Clean Architecture Layers" style="rounded=0;fillColor=#1e3a5f;strokeColor=none;fontColor=#ffffff;fontSize=15;fontStyle=1;html=1;align=center;" vertex="1" parent="1"><mxGeometry x="20" y="15" width="1560" height="55" as="geometry"/></mxCell>
+        <mxCell id="l4" value="Presentation Layer" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=#1565c0;fontSize=14;fontStyle=1;html=1;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="40" y="100" width="1520" height="160" as="geometry"/></mxCell>
+        <mxCell id="l4_sub" value="EBookLibrary.WebApi  |  EBookLibrary.Blazor  |  EBookLibrary.React" style="text;html=1;fontSize=10;align=center;verticalAlign=middle;fontColor=#1565c0;" vertex="1" parent="1"><mxGeometry x="60" y="145" width="1480" height="80" as="geometry"/></mxCell>
+        <mxCell id="l3" value="Infrastructure Layer" style="rounded=1;fillColor=#f3e5f5;strokeColor=#6a1b9a;fontColor=#6a1b9a;fontSize=14;fontStyle=1;html=1;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="120" y="280" width="1360" height="160" as="geometry"/></mxCell>
+        <mxCell id="l3_sub" value="EBookLibrary.Infrastructure  —  EF Core · SQL Server · BCrypt · JWT · FileStorage" style="text;html=1;fontSize=10;align=center;verticalAlign=middle;fontColor=#6a1b9a;" vertex="1" parent="1"><mxGeometry x="140" y="325" width="1320" height="80" as="geometry"/></mxCell>
+        <mxCell id="l2" value="Application Layer" style="rounded=1;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#2e7d32;fontSize=14;fontStyle=1;html=1;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="220" y="460" width="1160" height="160" as="geometry"/></mxCell>
+        <mxCell id="l2_sub" value="EBookLibrary.Application  —  MediatR CQRS · FluentValidation · AutoMapper · Pipeline Behaviors · DTOs" style="text;html=1;fontSize=10;align=center;verticalAlign=middle;fontColor=#2e7d32;" vertex="1" parent="1"><mxGeometry x="240" y="505" width="1120" height="80" as="geometry"/></mxCell>
+        <mxCell id="l1" value="Domain Layer" style="rounded=1;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=#6d4c41;fontSize=14;fontStyle=1;html=1;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="320" y="640" width="960" height="160" as="geometry"/></mxCell>
+        <mxCell id="l1_sub" value="EBookLibrary.Domain  —  Entities · Enums · Value Objects · Repository Interfaces · Domain Events" style="text;html=1;fontSize=10;align=center;verticalAlign=middle;fontColor=#6d4c41;" vertex="1" parent="1"><mxGeometry x="340" y="685" width="920" height="80" as="geometry"/></mxCell>
+        <mxCell id="g10" value="depends on →" style="text;html=1;fontSize=10;fontStyle=2;align=center;fontColor=#888888;" vertex="1" parent="1"><mxGeometry x="1320" y="170" width="120" height="20" as="geometry"/></mxCell>
+        <mxCell id="g11" value="depends on →" style="text;html=1;fontSize=10;fontStyle=2;align=center;fontColor=#888888;" vertex="1" parent="1"><mxGeometry x="1320" y="350" width="120" height="20" as="geometry"/></mxCell>
+        <mxCell id="g12" value="depends on →" style="text;html=1;fontSize=10;fontStyle=2;align=center;fontColor=#888888;" vertex="1" parent="1"><mxGeometry x="1320" y="530" width="120" height="20" as="geometry"/></mxCell>
+        <mxCell id="leg" value="Dependency Rule:
+Outer layers depend on inner layers.
+Inner layers are unaware of outer ones.
+Arrows point inward." style="rounded=1;fillColor=#fffde7;strokeColor=#f57f17;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="1320" y="830" width="260" height="100" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,48 @@
+@inherits LayoutComponentBase
+@inject IStringLocalizer<App> Loc
+@attribute [Authorize(Roles = "Admin")]
+
+<div class="min-vh-100 d-flex">
+    <!-- Sidebar -->
+    <div class="d-none d-md-flex flex-column p-0" style="width:240px; background-color:#1a3c7c; min-height:100vh;">
+        <div class="px-3 py-4 border-bottom border-primary-subtle">
+            <a class="text-white fw-bold text-decoration-none fs-5" href="/">📚 EBook Library</a>
+        </div>
+        <nav class="nav flex-column px-2 py-3 gap-1">
+            <NavLink class="nav-link text-white-50 rounded px-3 py-2" href="/admin" Match="NavLinkMatch.All"
+                     ActiveClass="text-white bg-white bg-opacity-25">
+                📊 @Loc["admin.dashboard"]
+            </NavLink>
+            <NavLink class="nav-link text-white-50 rounded px-3 py-2" href="/admin/books"
+                     ActiveClass="text-white bg-white bg-opacity-25">
+                📖 @Loc["admin.books"]
+            </NavLink>
+            <NavLink class="nav-link text-white-50 rounded px-3 py-2" href="/admin/authors"
+                     ActiveClass="text-white bg-white bg-opacity-25">
+                ✍️ @Loc["admin.authors"]
+            </NavLink>
+            <NavLink class="nav-link text-white-50 rounded px-3 py-2" href="/admin/genres"
+                     ActiveClass="text-white bg-white bg-opacity-25">
+                🏷️ @Loc["admin.genres"]
+            </NavLink>
+            <NavLink class="nav-link text-white-50 rounded px-3 py-2" href="/admin/users"
+                     ActiveClass="text-white bg-white bg-opacity-25">
+                👥 @Loc["admin.users"]
+            </NavLink>
+            <NavLink class="nav-link text-white-50 rounded px-3 py-2" href="/admin/upload"
+                     ActiveClass="text-white bg-white bg-opacity-25">
+                ⬆️ @Loc["admin.upload"]
+            </NavLink>
+        </nav>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex-grow-1 d-flex flex-column">
+        <header class="bg-white shadow-sm px-4 py-3 d-flex align-items-center">
+            <h6 class="mb-0 fw-semibold">@Loc["nav.admin"]</h6>
+        </header>
+        <main class="flex-grow-1 p-4">
+            @Body
+        </main>
+    </div>
+</div>

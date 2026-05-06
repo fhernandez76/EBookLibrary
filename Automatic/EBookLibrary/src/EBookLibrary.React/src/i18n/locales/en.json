@@ -1,0 +1,72 @@
+{
+  "nav": {
+    "home": "Home", "search": "Search Books", "login": "Login",
+    "register": "Register", "logout": "Logout", "admin": "Admin Panel",
+    "profile": "My Profile"
+  },
+  "home": {
+    "hero_title": "Discover Your Next Great Read",
+    "hero_subtitle": "Browse over 76,000 eBooks across every genre",
+    "search_placeholder": "Search by title, author, or genre...",
+    "search_btn": "Search",
+    "featured_genres": "Browse by Genre",
+    "new_arrivals": "New Arrivals"
+  },
+  "search": {
+    "title": "Search Results",
+    "filters": "Filters",
+    "filter_title": "Title",
+    "filter_author": "Author",
+    "filter_genre": "Genre",
+    "filter_year": "Publication Year",
+    "results_count": "{{count}} books found",
+    "no_results": "No books found matching your search.",
+    "clear_filters": "Clear Filters",
+    "sort_by": "Sort By"
+  },
+  "book": {
+    "download": "Download ePub",
+    "unavailable": "Not Available",
+    "pages": "{{count}} pages",
+    "year": "Published {{year}}",
+    "authors": "Authors",
+    "genres": "Genre",
+    "login_to_download": "Please login to download"
+  },
+  "auth": {
+    "login_title": "Welcome Back",
+    "register_title": "Create Account",
+    "email": "Email Address",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "login_btn": "Sign In",
+    "register_btn": "Create Account",
+    "no_account": "Don't have an account?",
+    "has_account": "Already have an account?",
+    "sign_up": "Sign Up",
+    "sign_in": "Sign In"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "books": "Books",
+    "authors": "Authors",
+    "genres": "Genres",
+    "users": "Users",
+    "upload": "Upload ePub",
+    "total_books": "Total Books",
+    "total_users": "Total Users"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add New",
+    "confirm_delete": "Are you sure you want to delete this item?",
+    "page_of": "Page {{current}} of {{total}}"
+  }
+}

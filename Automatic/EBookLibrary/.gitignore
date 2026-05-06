@@ -1,0 +1,27 @@
+﻿## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.swp
+*.DS_Store
+launchSettings.json
+
+## Seeder output (large SQL file — regenerate with dotnet run scripts/EBookLibrary.Seeder)
+scripts/seed_data.sql
+
+## Node
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+
+## EF Core
+*.pfx
+
+## Secrets
+appsettings.Development.json
+secrets.json

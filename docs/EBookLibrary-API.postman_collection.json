@@ -1,0 +1,944 @@
+{
+  "info": {
+    "_postman_id": "ebooklibrary-api-collection-v1",
+    "name": "EBook Library API",
+    "description": "Complete Postman collection for the EBook Library REST API.\n\nBase URL: http://localhost:5000/api\n\nHow to use:\n1. Run the 'Admin Login' request first.\n2. The 'Admin Token' variable is set automatically via the test script.\n3. Use 'Register User' then 'User Login' to test regular-user flows.\n4. All authenticated requests read from the {{adminToken}} or {{userToken}} collection variables.\n\nSeeded Admin Credentials:\n  Email: admin@ebooklibrary.com\n  Password: Admin@12345",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",    "value": "http://localhost:5000/api", "type": "string" },
+    { "key": "adminToken", "value": "",                          "type": "string" },
+    { "key": "userToken",  "value": "",                          "type": "string" },
+    { "key": "bookId",     "value": "",                          "type": "string" },
+    { "key": "authorId",   "value": "",                          "type": "string" },
+    { "key": "genreId",    "value": "",                          "type": "string" },
+    { "key": "userId",     "value": "",                          "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01 — Authentication",
+      "item": [
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.isSuccess && json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('adminToken', json.data.token);",
+                  "    pm.collectionVariables.set('userId', json.data.userId);",
+                  "    console.log('Admin token saved.');",
+                  "}",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Token present', () => pm.expect(json.data.token).to.be.a('string').and.not.empty);",
+                  "pm.test('Role is Admin', () => pm.expect(json.data.role).to.eql('Admin'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@ebooklibrary.com\",\n  \"password\": \"Admin@12345\"\n}"
+            },
+            "description": "Login as the seeded admin user. Automatically saves adminToken to collection variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Register New User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.isSuccess && json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('userToken', json.data.token);",
+                  "    console.log('User token saved.');",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Role is Regular', () => pm.expect(json.data.role).to.eql('Regular'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"TestPass@123\",\n  \"confirmPassword\": \"TestPass@123\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\"\n}"
+            },
+            "description": "Register a new regular user. Automatically saves userToken to collection variable."
+          },
+          "response": []
+        },
+        {
+          "name": "User Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.isSuccess && json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('userToken', json.data.token);",
+                  "    console.log('User token saved.');",
+                  "}",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"TestPass@123\"\n}"
+            },
+            "description": "Login as the regular user. Saves userToken."
+          },
+          "response": []
+        },
+        {
+          "name": "Register — Validation Error (weak password)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('isSuccess false', () => pm.expect(pm.response.json().isSuccess).to.be.false);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"bad@example.com\",\n  \"password\": \"12345\",\n  \"confirmPassword\": \"12345\"\n}"
+            },
+            "description": "TC-AUTH-04 — Expect 400 due to weak password."
+          },
+          "response": []
+        },
+        {
+          "name": "Login — Wrong Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@ebooklibrary.com\",\n  \"password\": \"WrongPassword!\"\n}"
+            },
+            "description": "TC-AUTH-11 — Expect 400."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 — Genres (Setup Data)",
+      "item": [
+        {
+          "name": "Create Genre — Novela",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.isSuccess && json.data) {",
+                  "    pm.collectionVariables.set('genreId', json.data);",
+                  "    console.log('Genre ID saved: ' + json.data);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/genres", "host": ["{{baseUrl}}"], "path": ["genres"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Novela\",\n  \"description\": \"Long-form prose fiction\"\n}"
+            },
+            "description": "TC-GEN-04 — Create a genre. Saves genreId to collection variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Genres",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns array', () => pm.expect(pm.response.json().data).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/genres", "host": ["{{baseUrl}}"], "path": ["genres"] },
+            "description": "TC-GEN-01 — Anonymous. Returns full list of genres."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Genre By ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/genres/{{genreId}}", "host": ["{{baseUrl}}"], "path": ["genres", "{{genreId}}"] },
+            "description": "TC-GEN-02 — Get the genre created above."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Genre",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/genres/{{genreId}}", "host": ["{{baseUrl}}"], "path": ["genres", "{{genreId}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Novela\",\n  \"description\": \"Updated: Long-form prose fiction narratives\"\n}"
+            },
+            "description": "TC-GEN-09 — Update genre description."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Genre — Unauthorized (Regular User)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 403', () => pm.response.to.have.status(403));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{userToken}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/genres", "host": ["{{baseUrl}}"], "path": ["genres"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Should Fail\"\n}"
+            },
+            "description": "TC-GEN-08 — Regular user cannot create genres. Expect 403."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 — Authors (Setup Data)",
+      "item": [
+        {
+          "name": "Create Author",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.isSuccess && json.data) {",
+                  "    pm.collectionVariables.set('authorId', json.data);",
+                  "    console.log('Author ID saved: ' + json.data);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/authors", "host": ["{{baseUrl}}"], "path": ["authors"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gabriel García Márquez\",\n  \"biography\": \"Colombian novelist, short-story writer, screenwriter, and journalist. Nobel Prize winner in 1982.\"\n}"
+            },
+            "description": "TC-AUT-20 — Create an author. Saves authorId."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Authors (Paged)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has items', () => pm.expect(pm.response.json().data.items).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/authors?pageNumber=1&pageSize=10", "host": ["{{baseUrl}}"], "path": ["authors"], "query": [{ "key": "pageNumber", "value": "1" }, { "key": "pageSize", "value": "10" }] },
+            "description": "TC-AUTH-15 — Get paged list of authors."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Author By ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/authors/{{authorId}}", "host": ["{{baseUrl}}"], "path": ["authors", "{{authorId}}"] },
+            "description": "TC-AUT-18 — Get author created above."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Author",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/authors/{{authorId}}", "host": ["{{baseUrl}}"], "path": ["authors", "{{authorId}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gabriel García Márquez\",\n  \"biography\": \"Updated biography. Colombian novelist and Nobel Prize winner.\"\n}"
+            },
+            "description": "TC-AUT-25 — Update author biography."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 — Books",
+      "item": [
+        {
+          "name": "Create Book",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.isSuccess && json.data) {",
+                  "    pm.collectionVariables.set('bookId', json.data);",
+                  "    console.log('Book ID saved: ' + json.data);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/books", "host": ["{{baseUrl}}"], "path": ["books"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Cien años de soledad\",\n  \"pages\": 417,\n  \"publicationYear\": 1967,\n  \"isbn\": \"9780060883287\",\n  \"description\": \"A landmark of magical realism and Latin American literature.\",\n  \"language\": \"Spanish\",\n  \"authorIds\": [\"{{authorId}}\"],\n  \"genreIds\": [\"{{genreId}}\"]\n}"
+            },
+            "description": "TC-BOOK-17 — Create a book using the author and genre created above. Saves bookId."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Books — No Filter",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has items array', () => pm.expect(pm.response.json().data.items).to.be.an('array'));",
+                  "pm.test('Has totalCount', () => pm.expect(pm.response.json().data.totalCount).to.be.a('number'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/books/search", "host": ["{{baseUrl}}"], "path": ["books", "search"] },
+            "description": "TC-BOOK-01 — Anonymous search, no filters."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Books — By Title",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/books/search?title=cien",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "search"],
+              "query": [{ "key": "title", "value": "cien" }]
+            },
+            "description": "TC-BOOK-02 — Filter by partial title match."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Books — By Author",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/books/search?authorName=garcia",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "search"],
+              "query": [{ "key": "authorName", "value": "garcia" }]
+            },
+            "description": "TC-BOOK-03 — Filter by partial author name."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Books — By Genre",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/books/search?genreName=Novela",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "search"],
+              "query": [{ "key": "genreName", "value": "Novela" }]
+            },
+            "description": "TC-BOOK-04 — Filter by genre name."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Books — Pagination",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/books/search?pageSize=5&pageNumber=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "search"],
+              "query": [{ "key": "pageSize", "value": "5" }, { "key": "pageNumber", "value": "1" }]
+            },
+            "description": "TC-BOOK-07 — Pagination test."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Book By ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has title', () => pm.expect(pm.response.json().data.title).to.be.a('string'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/books/{{bookId}}", "host": ["{{baseUrl}}"], "path": ["books", "{{bookId}}"] },
+            "description": "TC-BOOK-09 — Get book created above."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Book — Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/books/00000000-0000-0000-0000-000000000000", "host": ["{{baseUrl}}"], "path": ["books", "00000000-0000-0000-0000-000000000000"] },
+            "description": "TC-BOOK-10 — Non-existent GUID. Expect 404."
+          },
+          "response": []
+        },
+        {
+          "name": "Download Book — Authenticated",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 or 404', () => {",
+                  "    pm.expect([200, 404]).to.include(pm.response.code);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Content-Type is epub', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('epub'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{userToken}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/books/{{bookId}}/download", "host": ["{{baseUrl}}"], "path": ["books", "{{bookId}}", "download"] },
+            "description": "TC-BOOK-13 — Download with user token. 200 if epub uploaded, 404 if not."
+          },
+          "response": []
+        },
+        {
+          "name": "Download Book — Unauthenticated",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401', () => pm.response.to.have.status(401));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/books/{{bookId}}/download", "host": ["{{baseUrl}}"], "path": ["books", "{{bookId}}", "download"] },
+            "description": "TC-BOOK-14 — No auth. Expect 401."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Book",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/books/{{bookId}}", "host": ["{{baseUrl}}"], "path": ["books", "{{bookId}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Cien años de soledad (Edición Revisada)\",\n  \"pages\": 417,\n  \"publicationYear\": 1967,\n  \"isbn\": \"9780060883287\",\n  \"description\": \"Updated description for the landmark magical realism novel.\",\n  \"language\": \"Spanish\"\n}"
+            },
+            "description": "TC-BOOK-25 — Update book metadata."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Book — Unauthorized (Regular User)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 403', () => pm.response.to.have.status(403));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{userToken}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/books", "host": ["{{baseUrl}}"], "path": ["books"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Should Fail\",\n  \"pages\": 100,\n  \"language\": \"Spanish\",\n  \"authorIds\": [],\n  \"genreIds\": []\n}"
+            },
+            "description": "TC-BOOK-24 — Regular user cannot create books. Expect 403."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 — File Upload",
+      "item": [
+        {
+          "name": "Upload Epub File",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Upload success', () => pm.expect(pm.response.json().isSuccess).to.be.true);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/files/books/{{bookId}}/upload", "host": ["{{baseUrl}}"], "path": ["files", "books", "{{bookId}}", "upload"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Select a .epub file from your machine"
+                }
+              ]
+            },
+            "description": "TC-FILE-01 — Upload an epub. Select a .epub file in the Body > form-data > file field. Requires C:\\EBookLibrary\\Books folder to exist."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Invalid File Type (.pdf)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/files/books/{{bookId}}/upload", "host": ["{{baseUrl}}"], "path": ["files", "books", "{{bookId}}", "upload"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Select any .pdf file"
+                }
+              ]
+            },
+            "description": "TC-FILE-02 — Upload a pdf. Expect 400."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload — No Auth",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401', () => pm.response.to.have.status(401));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/files/books/{{bookId}}/upload", "host": ["{{baseUrl}}"], "path": ["files", "books", "{{bookId}}", "upload"] },
+            "body": { "mode": "formdata", "formdata": [] },
+            "description": "TC-FILE-06 — No auth. Expect 401."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "06 — Users (Admin)",
+      "item": [
+        {
+          "name": "Get Users (Paged)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has items', () => pm.expect(pm.response.json().data.items).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users?pageNumber=1&pageSize=20", "host": ["{{baseUrl}}"], "path": ["users"], "query": [{ "key": "pageNumber", "value": "1" }, { "key": "pageSize", "value": "20" }] },
+            "description": "TC-USR-01 — List all users. Admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users — Unauthorized (Regular User)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 403', () => pm.response.to.have.status(403));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{userToken}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] },
+            "description": "TC-USR-03 — Regular user gets users list. Expect 403."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role — Promote to Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}/role", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}", "role"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newRole\": \"Admin\"\n}"
+            },
+            "description": "TC-USR-04 — Promote a user to Admin. Replace {{userId}} with a valid user GUID from Get Users."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role — Demote to Regular",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}/role", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}", "role"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newRole\": \"Regular\"\n}"
+            },
+            "description": "TC-USR-05 — Demote a user back to Regular."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "07 — Cleanup (Delete Data)",
+      "item": [
+        {
+          "name": "Delete Book",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/books/{{bookId}}", "host": ["{{baseUrl}}"], "path": ["books", "{{bookId}}"] },
+            "description": "TC-BOOK-30 — Soft-delete the created book."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Deleted Book — Should Return 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/books/{{bookId}}", "host": ["{{baseUrl}}"], "path": ["books", "{{bookId}}"] },
+            "description": "Confirm soft-deleted book is not returned. Expect 404."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Author",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/authors/{{authorId}}", "host": ["{{baseUrl}}"], "path": ["authors", "{{authorId}}"] },
+            "description": "TC-AUT-28 — Soft-delete the created author."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Genre",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/genres/{{genreId}}", "host": ["{{baseUrl}}"], "path": ["genres", "{{genreId}}"] },
+            "description": "TC-GEN-12 — Soft-delete the created genre."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

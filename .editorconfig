@@ -1,0 +1,62 @@
+# EditorConfig — top-most config
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ----- C# / .NET -----
+[*.cs]
+indent_size = 4
+
+# .NET formatting & code style (subset, the rest follows defaults)
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+
+# ----- Project / config -----
+[*.{csproj,props,targets,xml,config}]
+indent_size = 2
+
+[*.{sln,slnLaunch}]
+indent_size = 4
+end_of_line = crlf
+
+# ----- Web / front-end -----
+[*.{js,jsx,ts,tsx,json,css,scss,html,razor}]
+indent_size = 2
+
+# ----- Markdown -----
+[*.md]
+indent_size = 2
+trim_trailing_whitespace = false  # preserve hard line-breaks
+
+# ----- PowerShell -----
+[*.{ps1,psm1,psd1}]
+indent_size = 4
+end_of_line = crlf
+
+# ----- Shell -----
+[*.{sh,bash}]
+indent_size = 2
+end_of_line = lf
+
+# ----- YAML -----
+[*.{yml,yaml}]
+indent_size = 2

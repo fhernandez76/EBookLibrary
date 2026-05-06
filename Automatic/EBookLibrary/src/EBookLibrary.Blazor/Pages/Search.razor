@@ -1,0 +1,157 @@
+@page "/search"
+@layout MainLayout
+@inject BookService BookSvc
+@inject CatalogService CatalogSvc
+@inject NavigationManager Nav
+@inject IStringLocalizer<App> Loc
+
+<PageTitle>EBook Library — @Loc["search.title"]</PageTitle>
+
+<h1 class="fw-bold mb-4">@Loc["search.title"]</h1>
+
+<!-- Filter panel -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold">@Loc["search.filter_title"]</label>
+                <input type="text" class="form-control" @bind="_filter.Title" @onkeydown="FilterKeyDown" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold">@Loc["search.filter_author"]</label>
+                <input type="text" class="form-control" @bind="_filter.Author" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold">@Loc["search.filter_genre"]</label>
+                <select class="form-select" @bind="_filter.Genre">
+                    <option value="">— @Loc["search.filter_genre"] —</option>
+                    @foreach (var g in _genres)
+                    {
+                        <option value="@g.Name">@g.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small fw-semibold">@Loc["search.filter_year"]</label>
+                <input type="number" class="form-control" @bind="_filter.Year" min="1800" max="2026" />
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <button class="btn btn-primary w-100" @onclick="RunSearch">@Loc["home.search_btn"]</button>
+            </div>
+        </div>
+        @if (HasFilters)
+        {
+            <div class="mt-2">
+                <button class="btn btn-link btn-sm text-muted p-0" @onclick="ClearFilters">
+                    ✕ @Loc["search.clear_filters"]
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+@if (_result is not null)
+{
+    <p class="text-muted small mb-3">@Loc["search.results_count", _result.TotalCount.ToString("N0")]</p>
+}
+
+<LoadingSpinner IsLoading="_loading" />
+
+@if (!_loading)
+{
+    @if (_result?.Items.Any() == true)
+    {
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 mb-4">
+            @foreach (var book in _result.Items)
+            {
+                <div class="col"><BookCard Book="book" /></div>
+            }
+        </div>
+        <PaginationComponent TotalPages="_result.TotalPages" CurrentPage="_currentPage"
+                             OnPageChange="GoToPage" />
+    }
+    else if (_searched)
+    {
+        <div class="text-center py-5 text-muted">
+            <p class="fs-5">@Loc["search.no_results"]</p>
+        </div>
+    }
+}
+
+@code {
+    private PagedResult<BookSummary>? _result;
+    private List<GenreModel> _genres = [];
+    private bool _loading;
+    private bool _searched;
+    private int _currentPage = 1;
+
+    private class FilterState
+    {
+        public string? Title { get; set; }
+        public string? Author { get; set; }
+        public string? Genre { get; set; }
+        public int? Year { get; set; }
+    }
+
+    private readonly FilterState _filter = new();
+
+    private bool HasFilters => !string.IsNullOrWhiteSpace(_filter.Author) ||
+                               !string.IsNullOrWhiteSpace(_filter.Genre) ||
+                               _filter.Year.HasValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _genres = await CatalogSvc.GetGenresAsync();
+
+        var uri = new Uri(Nav.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        _filter.Title = query["title"];
+        _filter.Author = query["authorName"];
+        _filter.Genre = query["genreName"];
+        if (int.TryParse(query["publicationYear"], out var y)) _filter.Year = y;
+
+        if (_filter.Title is not null || _filter.Author is not null || _filter.Genre is not null)
+            await RunSearch();
+    }
+
+    private async Task RunSearch()
+    {
+        _loading = true;
+        _searched = true;
+        _currentPage = 1;
+        await LoadPage(1);
+    }
+
+    private async Task GoToPage(int page)
+    {
+        _currentPage = page;
+        await LoadPage(page);
+        // scroll to top
+    }
+
+    private async Task LoadPage(int page)
+    {
+        _loading = true;
+        _result = await BookSvc.SearchAsync(new BookSearchFilter(
+            Title: _filter.Title,
+            AuthorName: _filter.Author,
+            GenreName: _filter.Genre,
+            PublicationYear: _filter.Year,
+            PageNumber: page,
+            PageSize: 24));
+        _loading = false;
+    }
+
+    private void FilterKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") _ = RunSearch();
+    }
+
+    private async Task ClearFilters()
+    {
+        _filter.Author = null;
+        _filter.Genre = null;
+        _filter.Year = null;
+        await RunSearch();
+    }
+}

@@ -1,0 +1,17 @@
+@inherits LayoutComponentBase
+@inject IStringLocalizer<App> Loc
+
+<div class="min-vh-100 d-flex flex-column">
+    <NavMenu />
+    <main class="flex-grow-1">
+        <div class="container-xl py-4">
+            @Body
+        </div>
+    </main>
+    <footer class="bg-dark text-white py-3 mt-auto">
+        <div class="container-xl text-center">
+            <small>&copy; 2026 EBook Library &mdash; Your digital reading companion</small>
+        </div>
+    </footer>
+</div>
+

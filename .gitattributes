@@ -1,0 +1,47 @@
+# Auto-detect text files and normalise line endings on commit
+* text=auto eol=lf
+
+# Force LF for cross-platform shell scripts
+*.sh    text eol=lf
+*.bash  text eol=lf
+
+# Force CRLF for Windows-only scripts
+*.ps1   text eol=crlf
+*.psm1  text eol=crlf
+*.psd1  text eol=crlf
+*.cmd   text eol=crlf
+*.bat   text eol=crlf
+
+# .NET source / project files (LF is fine; VS handles both)
+*.cs        text diff=csharp
+*.csproj    text
+*.sln       text eol=crlf
+*.props     text
+*.targets   text
+
+# Web assets
+*.ts        text
+*.tsx       text
+*.js        text
+*.jsx       text
+*.json      text
+*.css       text
+*.scss      text
+*.html      text
+*.razor     text
+
+# Markdown / docs
+*.md        text diff=markdown
+
+# Binary assets
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.pdf       binary
+*.docx      binary
+*.epub      binary
+*.xlsx      binary
+*.zip       binary
+*.epub      binary

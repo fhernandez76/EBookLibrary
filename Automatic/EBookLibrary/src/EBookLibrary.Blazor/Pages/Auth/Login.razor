@@ -1,0 +1,76 @@
+@page "/login"
+@layout MainLayout
+@inject AuthService AuthSvc
+@inject NavigationManager Nav
+@inject IStringLocalizer<App> Loc
+
+<PageTitle>@Loc["auth.login_title"] — EBook Library</PageTitle>
+
+<div class="min-vh-75 d-flex align-items-center justify-content-center py-5">
+    <div class="card border-0 shadow-sm p-4" style="width:100%; max-width:420px;">
+        <h2 class="fw-bold text-center mb-4">@Loc["auth.login_title"]</h2>
+
+        <EditForm Model="_model" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+
+            <div class="mb-3">
+                <label class="form-label">@Loc["auth.email"]</label>
+                <InputText class="form-control" @bind-Value="_model.Email" type="email" autocomplete="email" />
+                <ValidationMessage For="() => _model.Email" class="text-danger small" />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">@Loc["auth.password"]</label>
+                <InputText class="form-control" @bind-Value="_model.Password" type="password" autocomplete="current-password" />
+                <ValidationMessage For="() => _model.Password" class="text-danger small" />
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(_errorMessage))
+            {
+                <div class="alert alert-danger py-2 small">@_errorMessage</div>
+            }
+
+            <button type="submit" class="btn btn-primary w-100 py-2" disabled="@_loading">
+                @if (_loading)
+                {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                @Loc["auth.login_btn"]
+            </button>
+        </EditForm>
+
+        <p class="text-center text-muted small mt-4">
+            @Loc["auth.no_account"]
+            <a href="/register">@Loc["auth.sign_up"]</a>
+        </p>
+    </div>
+</div>
+
+@code {
+    private readonly LoginFormModel _model = new();
+    private bool _loading;
+    private string? _errorMessage;
+
+    private async Task HandleLogin()
+    {
+        _loading = true;
+        _errorMessage = null;
+        var (data, error) = await AuthSvc.LoginAsync(new LoginRequest(_model.Email, _model.Password));
+        _loading = false;
+
+        if (data is not null)
+            Nav.NavigateTo("/");
+        else
+            _errorMessage = error ?? "Login failed";
+    }
+
+    private class LoginFormModel
+    {
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Password { get; set; } = string.Empty;
+    }
+}

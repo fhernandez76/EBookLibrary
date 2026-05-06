@@ -1,0 +1,83 @@
+@page "/admin"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@inject BookService BookSvc
+@inject CatalogService CatalogSvc
+@inject IStringLocalizer<App> Loc
+
+<PageTitle>@Loc["admin.dashboard"] — EBook Library</PageTitle>
+
+<h1 class="fw-bold mb-4">@Loc["admin.dashboard"]</h1>
+
+<div class="row g-3 mb-5">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm p-4">
+            <div class="fs-1 mb-2">📖</div>
+            <div class="fs-2 fw-bold text-primary">@(_totalBooks?.ToString("N0") ?? "—")</div>
+            <p class="text-muted mb-0 small">@Loc["admin.total_books"]</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm p-4">
+            <div class="fs-1 mb-2">👥</div>
+            <div class="fs-2 fw-bold text-success">@(_totalUsers?.ToString("N0") ?? "—")</div>
+            <p class="text-muted mb-0 small">@Loc["admin.total_users"]</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm p-4">
+            <div class="fs-1 mb-2">🏷️</div>
+            <div class="fs-2 fw-bold text-warning">171</div>
+            <p class="text-muted mb-0 small">@Loc["admin.genres"]</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm p-4">
+            <div class="fs-1 mb-2">✍️</div>
+            <div class="fs-2 fw-bold text-danger">16,788</div>
+            <p class="text-muted mb-0 small">@Loc["admin.authors"]</p>
+        </div>
+    </div>
+</div>
+
+<h5 class="fw-semibold mb-3">Quick Links</h5>
+@if (!string.IsNullOrWhiteSpace(_error))
+{
+    <div class="alert alert-warning small py-2 mb-3">@_error</div>
+}
+<div class="d-flex flex-wrap gap-2">
+    <a href="/admin/books" class="btn btn-outline-primary">📖 @Loc["admin.books"]</a>
+    <a href="/admin/authors" class="btn btn-outline-primary">✍️ @Loc["admin.authors"]</a>
+    <a href="/admin/genres" class="btn btn-outline-primary">🏷️ @Loc["admin.genres"]</a>
+    <a href="/admin/users" class="btn btn-outline-primary">👥 @Loc["admin.users"]</a>
+    <a href="/admin/upload" class="btn btn-outline-danger">⬆️ @Loc["admin.upload"]</a>
+</div>
+
+@code {
+    private int? _totalBooks;
+    private int? _totalUsers;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var books = await BookSvc.SearchAsync(new BookSearchFilter(PageSize: 1));
+            _totalBooks = books?.TotalCount;
+        }
+        catch (HttpRequestException) { /* show — instead of crashing */ }
+
+        try
+        {
+            var users = await CatalogSvc.GetUsersAsync(1, 1);
+            _totalUsers = users?.TotalCount;
+        }
+        catch (HttpRequestException ex)
+        {
+            _error = ex.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                     ex.StatusCode == System.Net.HttpStatusCode.Forbidden
+                ? "Session expired — please log in again."
+                : "Could not load user stats.";
+        }
+    }
+}
