@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="21.0.0">
+  <diagram id="d1" name="UI Mockup – Admin Dashboard">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" page="1" pageScale="1" pageWidth="1300" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="UI Mockup — Admin Dashboard" style="rounded=0;fillColor=#1e3a5f;strokeColor=none;fontColor=#ffffff;fontSize=15;fontStyle=1;html=1;align=center;" vertex="1" parent="1"><mxGeometry x="20" y="15" width="1260" height="50" as="geometry"/></mxCell>
+        <mxCell id="chrome" value="" style="fillColor=#f5f5f5;strokeColor=#cccccc;html=1;" vertex="1" parent="1"><mxGeometry x="40" y="78" width="1220" height="28" as="geometry"/></mxCell>
+        <mxCell id="nav" value="" style="fillColor=#1e3a5f;strokeColor=none;html=1;" vertex="1" parent="1"><mxGeometry x="40" y="106" width="1220" height="50" as="geometry"/></mxCell>
+        <mxCell id="nl" value="EBook Library Admin" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="55" y="119" width="190" height="24" as="geometry"/></mxCell>
+        <mxCell id="nu" value="admin@library.com  ▾" style="text;html=1;fontSize=10;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="1080" y="119" width="168" height="24" as="geometry"/></mxCell>
+        <mxCell id="sidebar" value="" style="fillColor=#2d3748;strokeColor=#1a202c;html=1;" vertex="1" parent="1"><mxGeometry x="40" y="156" width="200" height="754" as="geometry"/></mxCell>
+        <mxCell id="g10" value="▶  Dashboard" style="rounded=0;fillColor=#3182ce;strokeColor=none;fontColor=#ffffff;fontSize=10;html=1;align=left;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="48" y="176" width="184" height="36" as="geometry"/></mxCell>
+        <mxCell id="g11" value="    Books" style="rounded=0;fillColor=none;strokeColor=none;fontColor=#e2e8f0;fontSize=10;html=1;align=left;" vertex="1" parent="1"><mxGeometry x="48" y="224" width="184" height="36" as="geometry"/></mxCell>
+        <mxCell id="g12" value="    Authors" style="rounded=0;fillColor=none;strokeColor=none;fontColor=#e2e8f0;fontSize=10;html=1;align=left;" vertex="1" parent="1"><mxGeometry x="48" y="272" width="184" height="36" as="geometry"/></mxCell>
+        <mxCell id="g13" value="    Genres" style="rounded=0;fillColor=none;strokeColor=none;fontColor=#e2e8f0;fontSize=10;html=1;align=left;" vertex="1" parent="1"><mxGeometry x="48" y="320" width="184" height="36" as="geometry"/></mxCell>
+        <mxCell id="g14" value="    Users" style="rounded=0;fillColor=none;strokeColor=none;fontColor=#e2e8f0;fontSize=10;html=1;align=left;" vertex="1" parent="1"><mxGeometry x="48" y="368" width="184" height="36" as="geometry"/></mxCell>
+        <mxCell id="g15" value="    Upload Files" style="rounded=0;fillColor=none;strokeColor=none;fontColor=#e2e8f0;fontSize=10;html=1;align=left;" vertex="1" parent="1"><mxGeometry x="48" y="416" width="184" height="36" as="geometry"/></mxCell>
+        <mxCell id="g16" value="&lt;b&gt;1,248&lt;/b&gt;&lt;br/&gt;Total Books&lt;br/&gt;&lt;i&gt;12 new this month&lt;/i&gt;" style="rounded=1;fillColor=#1565c0;strokeColor=none;fontColor=#ffffff;fontSize=11;fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="250" y="166" width="237" height="80" as="geometry"/></mxCell>
+        <mxCell id="g17" value="&lt;b&gt;387&lt;/b&gt;&lt;br/&gt;Total Authors&lt;br/&gt;&lt;i&gt;5 new this month&lt;/i&gt;" style="rounded=1;fillColor=#4527a0;strokeColor=none;fontColor=#ffffff;fontSize=11;fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="499" y="166" width="237" height="80" as="geometry"/></mxCell>
+        <mxCell id="g18" value="&lt;b&gt;3,941&lt;/b&gt;&lt;br/&gt;Total Users&lt;br/&gt;&lt;i&gt;124 new this week&lt;/i&gt;" style="rounded=1;fillColor=#2e7d32;strokeColor=none;fontColor=#ffffff;fontSize=11;fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="748" y="166" width="237" height="80" as="geometry"/></mxCell>
+        <mxCell id="g19" value="&lt;b&gt;18,762&lt;/b&gt;&lt;br/&gt;Downloads&lt;br/&gt;&lt;i&gt;Today: 89&lt;/i&gt;" style="rounded=1;fillColor=#e65100;strokeColor=none;fontColor=#ffffff;fontSize=11;fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="997" y="166" width="237" height="80" as="geometry"/></mxCell>
+        <mxCell id="bTblHdr" value="Books Management" style="text;html=1;fontSize=13;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="250" y="261" width="300" height="26" as="geometry"/></mxCell>
+        <mxCell id="addBtn" value="+ Add Book" style="rounded=1;fillColor=#1e88e5;strokeColor=#1565c0;fontColor=#ffffff;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1130" y="261" width="110" height="28" as="geometry"/></mxCell>
+        <mxCell id="thead" value="" style="fillColor=#1e3a5f;strokeColor=none;fontColor=#ffffff;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="250" y="296" width="1000" height="36" as="geometry"/></mxCell>
+        <mxCell id="g20" value="Title" style="text;html=1;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="258" y="307" width="232" height="20" as="geometry"/></mxCell>
+        <mxCell id="g21" value="Author" style="text;html=1;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="498" y="307" width="172" height="20" as="geometry"/></mxCell>
+        <mxCell id="g22" value="Genre" style="text;html=1;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="678" y="307" width="122" height="20" as="geometry"/></mxCell>
+        <mxCell id="g23" value="Language" style="text;html=1;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="808" y="307" width="92" height="20" as="geometry"/></mxCell>
+        <mxCell id="g24" value="Status" style="text;html=1;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="908" y="307" width="102" height="20" as="geometry"/></mxCell>
+        <mxCell id="g25" value="Actions" style="text;html=1;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="1018" y="307" width="122" height="20" as="geometry"/></mxCell>
+        <mxCell id="g26" value="" style="fillColor=#ffffff;strokeColor=#eeeeee;html=1;" vertex="1" parent="1"><mxGeometry x="250" y="332" width="1000" height="32" as="geometry"/></mxCell>
+        <mxCell id="g27" value="Clean Code" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="258" y="339" width="232" height="18" as="geometry"/></mxCell>
+        <mxCell id="g28" value="Robert C. Martin" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="498" y="339" width="172" height="18" as="geometry"/></mxCell>
+        <mxCell id="g29" value="Technology" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="678" y="339" width="122" height="18" as="geometry"/></mxCell>
+        <mxCell id="g30" value="English" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="808" y="339" width="92" height="18" as="geometry"/></mxCell>
+        <mxCell id="g31" value="Available" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="908" y="339" width="102" height="18" as="geometry"/></mxCell>
+        <mxCell id="g32" value="Edit" style="rounded=1;fillColor=#ffffff;strokeColor=#1e88e5;fontColor=#1e88e5;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1130" y="336" width="50" height="24" as="geometry"/></mxCell>
+        <mxCell id="g33" value="Delete" style="rounded=1;fillColor=#e53935;strokeColor=#b71c1c;fontColor=#ffffff;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1185" y="336" width="55" height="24" as="geometry"/></mxCell>
+        <mxCell id="g34" value="" style="fillColor=#f5f5f5;strokeColor=#eeeeee;html=1;" vertex="1" parent="1"><mxGeometry x="250" y="366" width="1000" height="32" as="geometry"/></mxCell>
+        <mxCell id="g35" value="Domain-Driven Design" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="258" y="373" width="232" height="18" as="geometry"/></mxCell>
+        <mxCell id="g36" value="Eric Evans" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="498" y="373" width="172" height="18" as="geometry"/></mxCell>
+        <mxCell id="g37" value="Technology" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="678" y="373" width="122" height="18" as="geometry"/></mxCell>
+        <mxCell id="g38" value="English" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="808" y="373" width="92" height="18" as="geometry"/></mxCell>
+        <mxCell id="g39" value="Available" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="908" y="373" width="102" height="18" as="geometry"/></mxCell>
+        <mxCell id="g40" value="Edit" style="rounded=1;fillColor=#ffffff;strokeColor=#1e88e5;fontColor=#1e88e5;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1130" y="370" width="50" height="24" as="geometry"/></mxCell>
+        <mxCell id="g41" value="Delete" style="rounded=1;fillColor=#e53935;strokeColor=#b71c1c;fontColor=#ffffff;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1185" y="370" width="55" height="24" as="geometry"/></mxCell>
+        <mxCell id="g42" value="" style="fillColor=#ffffff;strokeColor=#eeeeee;html=1;" vertex="1" parent="1"><mxGeometry x="250" y="400" width="1000" height="32" as="geometry"/></mxCell>
+        <mxCell id="g43" value="Cien Años de Soledad" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="258" y="407" width="232" height="18" as="geometry"/></mxCell>
+        <mxCell id="g44" value="Gabriel García Márquez" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="498" y="407" width="172" height="18" as="geometry"/></mxCell>
+        <mxCell id="g45" value="Fiction" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="678" y="407" width="122" height="18" as="geometry"/></mxCell>
+        <mxCell id="g46" value="Spanish" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="808" y="407" width="92" height="18" as="geometry"/></mxCell>
+        <mxCell id="g47" value="Unavailable" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="908" y="407" width="102" height="18" as="geometry"/></mxCell>
+        <mxCell id="g48" value="Edit" style="rounded=1;fillColor=#ffffff;strokeColor=#1e88e5;fontColor=#1e88e5;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1130" y="404" width="50" height="24" as="geometry"/></mxCell>
+        <mxCell id="g49" value="Delete" style="rounded=1;fillColor=#e53935;strokeColor=#b71c1c;fontColor=#ffffff;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1185" y="404" width="55" height="24" as="geometry"/></mxCell>
+        <mxCell id="g50" value="" style="fillColor=#f5f5f5;strokeColor=#eeeeee;html=1;" vertex="1" parent="1"><mxGeometry x="250" y="434" width="1000" height="32" as="geometry"/></mxCell>
+        <mxCell id="g51" value="The Pragmatic Programmer" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="258" y="441" width="232" height="18" as="geometry"/></mxCell>
+        <mxCell id="g52" value="A. Hunt · D. Thomas" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="498" y="441" width="172" height="18" as="geometry"/></mxCell>
+        <mxCell id="g53" value="Technology" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="678" y="441" width="122" height="18" as="geometry"/></mxCell>
+        <mxCell id="g54" value="English" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="808" y="441" width="92" height="18" as="geometry"/></mxCell>
+        <mxCell id="g55" value="Available" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="908" y="441" width="102" height="18" as="geometry"/></mxCell>
+        <mxCell id="g56" value="Edit" style="rounded=1;fillColor=#ffffff;strokeColor=#1e88e5;fontColor=#1e88e5;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1130" y="438" width="50" height="24" as="geometry"/></mxCell>
+        <mxCell id="g57" value="Delete" style="rounded=1;fillColor=#e53935;strokeColor=#b71c1c;fontColor=#ffffff;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1185" y="438" width="55" height="24" as="geometry"/></mxCell>
+        <mxCell id="g58" value="" style="fillColor=#ffffff;strokeColor=#eeeeee;html=1;" vertex="1" parent="1"><mxGeometry x="250" y="468" width="1000" height="32" as="geometry"/></mxCell>
+        <mxCell id="g59" value="Design Patterns" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="258" y="475" width="232" height="18" as="geometry"/></mxCell>
+        <mxCell id="g60" value="Gang of Four" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="498" y="475" width="172" height="18" as="geometry"/></mxCell>
+        <mxCell id="g61" value="Technology" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="678" y="475" width="122" height="18" as="geometry"/></mxCell>
+        <mxCell id="g62" value="English" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="808" y="475" width="92" height="18" as="geometry"/></mxCell>
+        <mxCell id="g63" value="Available" style="text;html=1;fontSize=9;" vertex="1" parent="1"><mxGeometry x="908" y="475" width="102" height="18" as="geometry"/></mxCell>
+        <mxCell id="g64" value="Edit" style="rounded=1;fillColor=#ffffff;strokeColor=#1e88e5;fontColor=#1e88e5;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1130" y="472" width="50" height="24" as="geometry"/></mxCell>
+        <mxCell id="g65" value="Delete" style="rounded=1;fillColor=#e53935;strokeColor=#b71c1c;fontColor=#ffffff;fontSize=10;fontStyle=1;html=1;" vertex="1" parent="1"><mxGeometry x="1185" y="472" width="55" height="24" as="geometry"/></mxCell>
+        <mxCell id="legAvail" value="Available" style="rounded=1;fillColor=#e8f5e9;strokeColor=#43a047;fontColor=#2e7d32;fontSize=8;html=1;" vertex="1" parent="1"><mxGeometry x="250" y="516" width="80" height="22" as="geometry"/></mxCell>
+        <mxCell id="legUnavail" value="Unavailable" style="rounded=1;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=#6d4c41;fontSize=8;html=1;" vertex="1" parent="1"><mxGeometry x="340" y="516" width="95" height="22" as="geometry"/></mxCell>
+        <mxCell id="pager" value="← Prev   1  2  3  ...  63  Next →" style="text;html=1;fontSize=10;align=center;" vertex="1" parent="1"><mxGeometry x="250" y="551" width="1000" height="24" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

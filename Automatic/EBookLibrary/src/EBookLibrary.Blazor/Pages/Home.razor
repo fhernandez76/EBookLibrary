@@ -1,0 +1,112 @@
+@page "/"
+@layout MainLayout
+@inject BookService BookSvc
+@inject CatalogService CatalogSvc
+@inject NavigationManager Nav
+@inject IStringLocalizer<App> Loc
+
+<PageTitle>EBook Library — Home</PageTitle>
+
+<!-- Hero -->
+<div class="text-white text-center py-5 mb-5 rounded-3"
+     style="background: linear-gradient(135deg, #1a3c7c 0%, #0f2146 100%);">
+    <div class="py-3 px-4">
+        <div class="mb-3" style="font-size:3.5rem;">📚</div>
+        <h1 class="display-5 fw-bold font-serif">@Loc["home.hero_title"]</h1>
+        <p class="lead text-white-75 mb-4">@Loc["home.hero_subtitle"]</p>
+        <div class="d-flex gap-2 justify-content-center mx-auto" style="max-width:500px;">
+            <input type="text" class="form-control form-control-lg"
+                   placeholder="@Loc["home.search_placeholder"]"
+                   @bind="_heroSearch" @onkeydown="HeroKeyDown" />
+            <button class="btn btn-light text-primary fw-semibold px-4" @onclick="DoHeroSearch">
+                @Loc["home.search_btn"]
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Genres -->
+<h2 class="fw-bold mb-4">@Loc["home.featured_genres"]</h2>
+@if (_genres is null)
+{
+    <div class="row g-3 mb-5">
+        @for (int i = 0; i < 8; i++)
+        {
+            <div class="col-6 col-md-3"><div class="rounded-3 placeholder-glow" style="height:80px;"><span class="placeholder w-100 h-100 rounded-3"></span></div></div>
+        }
+    </div>
+}
+else
+{
+    <div class="row g-3 mb-5">
+        @foreach (var (genre, idx) in _genres.Take(8).Select((g, i) => (g, i)))
+        {
+            var color = GenreColors[idx % GenreColors.Length];
+            var genreUrl = $"/search?genreName={Uri.EscapeDataString(genre.Name)}";
+            <div class="col-6 col-md-3">
+                <button class="btn w-100 h-100 text-white text-start rounded-3 p-3 border-0"
+                        style="background: @color; min-height:80px;"
+                        @onclick="() => Nav.NavigateTo(genreUrl)">
+                    <div class="fw-semibold">@genre.Name</div>
+                    <small class="opacity-75">@genre.BookCount.ToString("N0") books</small>
+                </button>
+            </div>
+        }
+    </div>
+}
+
+<!-- Featured Books -->
+<h2 class="fw-bold mb-4">@Loc["home.new_arrivals"]</h2>
+<LoadingSpinner IsLoading="_booksLoading" />
+@if (!_booksLoading && _featuredBooks is not null)
+{
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 mb-5">
+        @foreach (var book in _featuredBooks.Items)
+        {
+            <div class="col"><BookCard Book="book" /></div>
+        }
+    </div>
+}
+
+<!-- Stats bar -->
+<div class="bg-light rounded-3 text-center py-4 mb-3">
+    <p class="fw-semibold text-primary mb-0">76,000+ eBooks available &middot; Free to browse &middot; ePub downloads</p>
+</div>
+
+@code {
+    private PagedResult<BookSummary>? _featuredBooks;
+    private List<GenreModel>? _genres;
+    private bool _booksLoading = true;
+    private string _heroSearch = string.Empty;
+
+    private static readonly string[] GenreColors =
+    [
+        "linear-gradient(135deg,#7c3aed,#5b21b6)",
+        "linear-gradient(135deg,#2563eb,#1e40af)",
+        "linear-gradient(135deg,#16a34a,#166534)",
+        "linear-gradient(135deg,#d97706,#92400e)",
+        "linear-gradient(135deg,#dc2626,#991b1b)",
+        "linear-gradient(135deg,#0891b2,#164e63)",
+        "linear-gradient(135deg,#4f46e5,#3730a3)",
+        "linear-gradient(135deg,#ea580c,#9a3412)",
+    ];
+
+    protected override async Task OnInitializedAsync()
+    {
+        _genres = await CatalogSvc.GetGenresAsync();
+        _featuredBooks = await BookSvc.SearchAsync(new BookSearchFilter(PageSize: 12));
+        _booksLoading = false;
+    }
+
+    private void HeroKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") DoHeroSearch();
+    }
+
+    private void DoHeroSearch()
+    {
+        if (!string.IsNullOrWhiteSpace(_heroSearch))
+            Nav.NavigateTo($"/search?title={Uri.EscapeDataString(_heroSearch)}");
+    }
+}
+

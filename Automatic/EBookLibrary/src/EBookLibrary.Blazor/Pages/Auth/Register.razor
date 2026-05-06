@@ -1,0 +1,158 @@
+@page "/register"
+@layout MainLayout
+@inject AuthService AuthSvc
+@inject NavigationManager Nav
+@inject IStringLocalizer<App> Loc
+
+<PageTitle>@Loc["auth.register_title"] — EBook Library</PageTitle>
+
+<div class="min-vh-75 d-flex align-items-center justify-content-center py-5">
+    <div class="card border-0 shadow-sm p-4" style="width:100%; max-width:440px;">
+        <h2 class="fw-bold text-center mb-4">@Loc["auth.register_title"]</h2>
+
+        <EditForm Model="_model" OnValidSubmit="HandleRegister">
+            <DataAnnotationsValidator />
+
+            <div class="row g-3 mb-3">
+                <div class="col">
+                    <label class="form-label">@Loc["auth.first_name"]</label>
+                    <InputText class="form-control" @bind-Value="_model.FirstName" />
+                </div>
+                <div class="col">
+                    <label class="form-label">@Loc["auth.last_name"]</label>
+                    <InputText class="form-control" @bind-Value="_model.LastName" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">@Loc["auth.email"]</label>
+                <InputText class="form-control" @bind-Value="_model.Email" type="email" autocomplete="email" />
+                <ValidationMessage For="() => _model.Email" class="text-danger small" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">@Loc["auth.password"]</label>
+                <InputText class="form-control" @bind-Value="_model.Password" type="password" autocomplete="new-password" />
+                <ValidationMessage For="() => _model.Password" class="text-danger small" />
+                @if (!string.IsNullOrEmpty(_model.Password))
+                {
+                    <div class="mt-2">
+                        <div class="d-flex gap-1">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                var filled = i < PasswordScore;
+                                <div class="flex-fill rounded" style="height:4px; background:@(filled ? StrengthColor : "#e9ecef");"></div>
+                            }
+                        </div>
+                        <small class="text-muted">@StrengthLabel</small>
+                    </div>
+                }
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">@Loc["auth.confirm_password"]</label>
+                <InputText class="form-control" @bind-Value="_model.ConfirmPassword" type="password" autocomplete="new-password" />
+                <ValidationMessage For="() => _model.ConfirmPassword" class="text-danger small" />
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(_errorMessage))
+            {
+                <div class="alert alert-danger py-2 small">@_errorMessage</div>
+            }
+
+            <button type="submit" class="btn btn-primary w-100 py-2" disabled="@_loading">
+                @if (_loading)
+                {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                @Loc["auth.register_btn"]
+            </button>
+        </EditForm>
+
+        <p class="text-center text-muted small mt-4">
+            @Loc["auth.has_account"]
+            <a href="/login">@Loc["auth.sign_in"]</a>
+        </p>
+    </div>
+</div>
+
+@code {
+    private readonly RegisterFormModel _model = new();
+    private bool _loading;
+    private string? _errorMessage;
+
+    private int PasswordScore
+    {
+        get
+        {
+            var p = _model.Password ?? string.Empty;
+            int score = 0;
+            if (p.Length >= 8) score++;
+            if (p.Any(char.IsUpper)) score++;
+            if (p.Any(char.IsLower)) score++;
+            if (p.Any(char.IsDigit)) score++;
+            if (p.Any(c => !char.IsLetterOrDigit(c))) score++;
+            return score;
+        }
+    }
+
+    private string StrengthColor => PasswordScore switch
+    {
+        1 => "#ef4444",
+        2 => "#f97316",
+        3 => "#eab308",
+        4 => "#3b82f6",
+        5 => "#22c55e",
+        _ => "#e9ecef"
+    };
+
+    private string StrengthLabel => PasswordScore switch
+    {
+        1 => "Very weak",
+        2 => "Weak",
+        3 => "Fair",
+        4 => "Good",
+        5 => "Strong",
+        _ => ""
+    };
+
+    private async Task HandleRegister()
+    {
+        _loading = true;
+        _errorMessage = null;
+
+        if (_model.Password != _model.ConfirmPassword)
+        {
+            _errorMessage = "Passwords do not match";
+            _loading = false;
+            return;
+        }
+
+        var (data, error) = await AuthSvc.RegisterAsync(new RegisterRequest(
+            _model.Email, _model.Password, _model.ConfirmPassword,
+            _model.FirstName, _model.LastName));
+        _loading = false;
+
+        if (data is not null)
+            Nav.NavigateTo("/");
+        else
+            _errorMessage = error ?? "Registration failed";
+    }
+
+    private class RegisterFormModel
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
+        public string Password { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ConfirmPassword { get; set; } = string.Empty;
+    }
+}

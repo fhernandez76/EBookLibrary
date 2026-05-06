@@ -1,0 +1,146 @@
+@page "/books/{BookId}"
+@layout MainLayout
+@inject BookService BookSvc
+@inject IStringLocalizer<App> Loc
+@inject NavigationManager Nav
+
+<PageTitle>@(_book?.Title ?? "Book Detail") — EBook Library</PageTitle>
+
+@if (_loading)
+{
+    <LoadingSpinner IsLoading="true" />
+}
+else if (_book is null)
+{
+    <div class="text-center py-5 text-muted">
+        <p>@Loc["common.error"]</p>
+        <button class="btn btn-primary mt-3" @onclick='() => Nav.NavigateTo("/")'>Back</button>
+    </div>
+}
+else
+{
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/search">Books</a></li>
+            <li class="breadcrumb-item active text-truncate" style="max-width:200px;">@_book.Title</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4 mb-5">
+        <!-- Cover -->
+        <div class="col-auto">
+            <div class="d-flex align-items-center justify-content-center rounded-3 shadow"
+                 style="width:160px; height:220px; background: linear-gradient(135deg,#1a3c7c,#0f2146); overflow:hidden;">
+                @if (!string.IsNullOrWhiteSpace(_book.CoverImageUrl))
+                {
+                    <img src="@_book.CoverImageUrl" alt="@_book.Title" class="img-fluid w-100 h-100" style="object-fit:cover;" />
+                }
+                else
+                {
+                    <span style="font-size:4rem;">📖</span>
+                }
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="col">
+            <!-- Genre + Status badges -->
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                @foreach (var genre in _book.Genres)
+                {
+                    <span class="badge" style="background-color:#1a3c7c;">@genre</span>
+                }
+                <span class="badge @(_book.Status == "Available" ? "bg-success" : "bg-secondary")">@_book.Status</span>
+            </div>
+
+            <h1 class="fs-2 fw-bold mb-1">@_book.Title</h1>
+            <p class="text-muted mb-3">@string.Join(", ", _book.Authors)</p>
+
+            <div class="d-flex flex-wrap gap-4 small text-muted mb-4">
+                <span>📄 @Loc["book.pages", _book.Pages]</span>
+                @if (_book.PublicationYear.HasValue)
+                {
+                    <span>📅 @Loc["book.year", _book.PublicationYear]</span>
+                }
+                @if (!string.IsNullOrWhiteSpace(_book.Language))
+                {
+                    <span>🌐 @_book.Language</span>
+                }
+            </div>
+
+            @if (_book.Status == "Available" && _book.HasFile)
+            {
+                <AuthorizeView>
+                    <Authorized>
+                        <button class="btn btn-danger px-4" @onclick="DownloadBook" disabled="@_downloading">
+                            @if (_downloading)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                            }
+                            ⬇️ @Loc["book.download"]
+                        </button>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a href="/login" class="btn btn-primary px-4">
+                            🔒 @Loc["book.login_to_download"]
+                        </a>
+                    </NotAuthorized>
+                </AuthorizeView>
+            }
+            else
+            {
+                <span class="text-muted">@Loc["book.unavailable"]</span>
+            }
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(_book.Description))
+    {
+        <div class="mb-5">
+            <h4 class="fw-bold mb-3">About this book</h4>
+            <p class="text-muted lh-lg">@_book.Description</p>
+        </div>
+    }
+
+    <div class="mb-4">
+        <h6 class="fw-semibold text-muted mb-2 text-uppercase small">@Loc["book.authors"]</h6>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var author in _book.Authors)
+            {
+                <a href="/search?authorName=@Uri.EscapeDataString(author)"
+                   class="badge bg-primary-subtle text-primary border border-primary-subtle text-decoration-none">
+                    @author
+                </a>
+            }
+        </div>
+    </div>
+
+    <button class="btn btn-link text-muted p-0 mt-2" @onclick='() => Nav.NavigateTo("/search")'>
+        ← Back
+    </button>
+}
+
+@code {
+    [Parameter] public string BookId { get; set; } = string.Empty;
+
+    private EBookLibrary.Blazor.Models.BookDetail? _book;
+    private bool _loading = true;
+    private bool _downloading;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        _book = await BookSvc.GetByIdAsync(BookId);
+        _loading = false;
+    }
+
+    private async Task DownloadBook()
+    {
+        if (_book is null) return;
+        _downloading = true;
+        await BookSvc.DownloadAsync(_book.Id, $"{_book.Title}.epub");
+        _downloading = false;
+    }
+}

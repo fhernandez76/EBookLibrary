@@ -1,0 +1,56 @@
+@if (TotalPages > 1)
+{
+    <nav aria-label="Pagination" class="mt-4">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+                <button class="page-link" @onclick="() => PageChange(CurrentPage - 1)">&laquo;</button>
+            </li>
+
+            @foreach (var page in GetPageNumbers())
+            {
+                if (page == -1)
+                {
+                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                }
+                else
+                {
+                    <li class="page-item @(page == CurrentPage ? "active" : "")">
+                        <button class="page-link" @onclick="() => PageChange(page)">@(page)</button>
+                    </li>
+                }
+            }
+
+            <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
+                <button class="page-link" @onclick="() => PageChange(CurrentPage + 1)">&raquo;</button>
+            </li>
+        </ul>
+        <p class="text-center text-muted small">Page @CurrentPage of @TotalPages</p>
+    </nav>
+}
+
+@code {
+    [Parameter] public int TotalPages { get; set; }
+    [Parameter] public int CurrentPage { get; set; }
+    [Parameter] public EventCallback<int> OnPageChange { get; set; }
+
+    private async Task PageChange(int page)
+    {
+        if (page < 1 || page > TotalPages) return;
+        await OnPageChange.InvokeAsync(page);
+    }
+
+    private IEnumerable<int> GetPageNumbers()
+    {
+        if (TotalPages <= 7)
+            return Enumerable.Range(1, TotalPages);
+
+        var pages = new List<int> { 1 };
+        var start = Math.Max(2, CurrentPage - 2);
+        var end = Math.Min(TotalPages - 1, CurrentPage + 2);
+        if (start > 2) pages.Add(-1);
+        for (var i = start; i <= end; i++) pages.Add(i);
+        if (end < TotalPages - 1) pages.Add(-1);
+        pages.Add(TotalPages);
+        return pages;
+    }
+}

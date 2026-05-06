@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Navegación -->
+  <data name="nav.home" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="nav.search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="nav.admin" xml:space="preserve">
+    <value>Administración</value>
+  </data>
+  <data name="nav.profile" xml:space="preserve">
+    <value>Perfil</value>
+  </data>
+  <data name="nav.logout" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="nav.login" xml:space="preserve">
+    <value>Ingresar</value>
+  </data>
+  <data name="nav.register" xml:space="preserve">
+    <value>Registrarse</value>
+  </data>
+
+  <!-- Página principal -->
+  <data name="home.hero_title" xml:space="preserve">
+    <value>Tu Biblioteca Digital</value>
+  </data>
+  <data name="home.hero_subtitle" xml:space="preserve">
+    <value>Descubre, lee y descarga miles de eBooks gratuitos</value>
+  </data>
+  <data name="home.search_placeholder" xml:space="preserve">
+    <value>Buscar por título, autor o género…</value>
+  </data>
+  <data name="home.search_btn" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="home.featured_genres" xml:space="preserve">
+    <value>Géneros destacados</value>
+  </data>
+  <data name="home.new_arrivals" xml:space="preserve">
+    <value>Novedades</value>
+  </data>
+
+  <!-- Página de búsqueda -->
+  <data name="search.title" xml:space="preserve">
+    <value>Buscar libros</value>
+  </data>
+  <data name="search.filter_title" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="search.filter_author" xml:space="preserve">
+    <value>Autor</value>
+  </data>
+  <data name="search.filter_genre" xml:space="preserve">
+    <value>Género</value>
+  </data>
+  <data name="search.filter_year" xml:space="preserve">
+    <value>Año</value>
+  </data>
+  <data name="search.clear_filters" xml:space="preserve">
+    <value>Limpiar filtros</value>
+  </data>
+  <data name="search.results_count" xml:space="preserve">
+    <value>{0} resultados encontrados</value>
+  </data>
+  <data name="search.no_results" xml:space="preserve">
+    <value>Ningún libro coincide con tu búsqueda. Intenta otras palabras.</value>
+  </data>
+
+  <!-- Detalle del libro -->
+  <data name="book.pages" xml:space="preserve">
+    <value>{0} páginas</value>
+  </data>
+  <data name="book.year" xml:space="preserve">
+    <value>Publicado en {0}</value>
+  </data>
+  <data name="book.download" xml:space="preserve">
+    <value>Descargar ePub</value>
+  </data>
+  <data name="book.login_to_download" xml:space="preserve">
+    <value>Inicia sesión para descargar</value>
+  </data>
+  <data name="book.unavailable" xml:space="preserve">
+    <value>Archivo no disponible</value>
+  </data>
+  <data name="book.authors" xml:space="preserve">
+    <value>Autores</value>
+  </data>
+
+  <!-- Autenticación -->
+  <data name="auth.login_title" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="auth.register_title" xml:space="preserve">
+    <value>Crear cuenta</value>
+  </data>
+  <data name="auth.first_name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="auth.last_name" xml:space="preserve">
+    <value>Apellido</value>
+  </data>
+  <data name="auth.email" xml:space="preserve">
+    <value>Correo electrónico</value>
+  </data>
+  <data name="auth.password" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="auth.confirm_password" xml:space="preserve">
+    <value>Confirmar contraseña</value>
+  </data>
+  <data name="auth.login_btn" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="auth.register_btn" xml:space="preserve">
+    <value>Crear cuenta</value>
+  </data>
+  <data name="auth.has_account" xml:space="preserve">
+    <value>¿Ya tienes una cuenta?</value>
+  </data>
+  <data name="auth.sign_in" xml:space="preserve">
+    <value>Inicia sesión</value>
+  </data>
+  <data name="auth.no_account" xml:space="preserve">
+    <value>¿No tienes una cuenta?</value>
+  </data>
+  <data name="auth.sign_up" xml:space="preserve">
+    <value>Regístrate</value>
+  </data>
+
+  <!-- Administración -->
+  <data name="admin.dashboard" xml:space="preserve">
+    <value>Panel</value>
+  </data>
+  <data name="admin.books" xml:space="preserve">
+    <value>Libros</value>
+  </data>
+  <data name="admin.authors" xml:space="preserve">
+    <value>Autores</value>
+  </data>
+  <data name="admin.genres" xml:space="preserve">
+    <value>Géneros</value>
+  </data>
+  <data name="admin.users" xml:space="preserve">
+    <value>Usuarios</value>
+  </data>
+  <data name="admin.upload" xml:space="preserve">
+    <value>Subir libro</value>
+  </data>
+  <data name="admin.total_books" xml:space="preserve">
+    <value>Total de libros</value>
+  </data>
+  <data name="admin.total_users" xml:space="preserve">
+    <value>Total de usuarios</value>
+  </data>
+
+  <!-- Común -->
+  <data name="common.error" xml:space="preserve">
+    <value>Ocurrió un error. Por favor, intenta de nuevo más tarde.</value>
+  </data>
+  <data name="common.loading" xml:space="preserve">
+    <value>Cargando...</value>
+  </data>
+  <data name="common.save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="common.cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="common.delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="common.edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="common.add" xml:space="preserve">
+    <value>Agregar nuevo</value>
+  </data>
+  <data name="common.confirm_delete" xml:space="preserve">
+    <value>¿Estás seguro de que deseas eliminar este elemento?</value>
+  </data>
+</root>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="21.0.0">
+  <diagram id="d1" name="C4 Level 3 – Component: Web API">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="EBook Library — Component Diagram: Web API  (C4 Level 3)" style="rounded=0;fillColor=#1e3a5f;strokeColor=none;fontColor=#ffffff;fontSize=15;fontStyle=1;html=1;align=center;" vertex="1" parent="1"><mxGeometry x="20" y="15" width="1760" height="55" as="geometry"/></mxCell>
+        <mxCell id="mid_bg" value="Middleware Pipeline
+(ordered)" style="rounded=1;fillColor=#fce4ec;strokeColor=#c62828;fontColor=#c62828;fontSize=11;fontStyle=3;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="40" y="90" width="260" height="980" as="geometry"/></mxCell>
+        <mxCell id="ctrl_bg" value="Controllers" style="rounded=1;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#2e7d32;fontSize=11;fontStyle=3;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="360" y="90" width="290" height="980" as="geometry"/></mxCell>
+        <mxCell id="app_bg" value="Application Layer (MediatR)" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=#1565c0;fontSize=11;fontStyle=3;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="720" y="90" width="490" height="980" as="geometry"/></mxCell>
+        <mxCell id="inf_bg" value="Infrastructure / Services" style="rounded=1;fillColor=#f3e5f5;strokeColor=#6a1b9a;fontColor=#6a1b9a;fontSize=11;fontStyle=3;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="1280" y="90" width="470" height="980" as="geometry"/></mxCell>
+        <mxCell id="mid1" value="① ExceptionHandlingMiddleware
+Maps exceptions → HTTP codes" style="rounded=1;fillColor=#ffebee;strokeColor=#e53935;fontColor=#333333;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="55" y="140" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="mid2" value="② Security Headers Middleware
+X-Frame-Options · X-XSS-Prot." style="rounded=1;fillColor=#ffebee;strokeColor=#e53935;fontColor=#333333;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="55" y="260" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="mid3" value="③ HTTPS Redirection" style="rounded=1;fillColor=#ffebee;strokeColor=#e53935;fontColor=#333333;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="55" y="380" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="mid4" value="④ CORS  (AllowFrontends policy)" style="rounded=1;fillColor=#ffebee;strokeColor=#e53935;fontColor=#333333;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="55" y="500" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="mid5" value="⑤ Rate Limiter
+Fixed window · 10 req/min (auth)" style="rounded=1;fillColor=#ffebee;strokeColor=#e53935;fontColor=#333333;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="55" y="620" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="mid6" value="⑥ Authentication  (JWT Bearer)
+Validates Bearer token" style="rounded=1;fillColor=#ffebee;strokeColor=#e53935;fontColor=#333333;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="55" y="740" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="mid7" value="⑦ Authorization
+[Authorize] / Roles=&quot;Admin&quot;" style="rounded=1;fillColor=#ffebee;strokeColor=#e53935;fontColor=#333333;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="55" y="860" width="230" height="100" as="geometry"/></mxCell>
+        <mxCell id="c1" value="AuthController
+/api/auth
+POST register · POST login" style="rounded=1;fillColor=#e8f5e9;strokeColor=#43a047;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="375" y="140" width="260" height="130" as="geometry"/></mxCell>
+        <mxCell id="c2" value="BooksController
+/api/books
+Search · GetById · Create
+Update · Delete · Download" style="rounded=1;fillColor=#e8f5e9;strokeColor=#43a047;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="375" y="290" width="260" height="130" as="geometry"/></mxCell>
+        <mxCell id="c3" value="AuthorsController
+/api/authors
+CRUD, paged list" style="rounded=1;fillColor=#e8f5e9;strokeColor=#43a047;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="375" y="440" width="260" height="130" as="geometry"/></mxCell>
+        <mxCell id="c4" value="GenresController
+/api/genres
+CRUD, full list" style="rounded=1;fillColor=#e8f5e9;strokeColor=#43a047;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="375" y="590" width="260" height="130" as="geometry"/></mxCell>
+        <mxCell id="c5" value="UsersController
+/api/users  [Admin]
+Paged list · Update role" style="rounded=1;fillColor=#e8f5e9;strokeColor=#43a047;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="375" y="740" width="260" height="130" as="geometry"/></mxCell>
+        <mxCell id="c6" value="FilesController
+/api/files  [Admin]
+POST upload .epub" style="rounded=1;fillColor=#e8f5e9;strokeColor=#43a047;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="375" y="890" width="260" height="130" as="geometry"/></mxCell>
+        <mxCell id="a1" value="MediatR ISender
+[Command / Query dispatcher]" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1e88e5;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="735" y="140" width="460" height="130" as="geometry"/></mxCell>
+        <mxCell id="a2" value="LoggingBehavior
+[Pipeline: logs every request]" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1e88e5;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="735" y="290" width="460" height="130" as="geometry"/></mxCell>
+        <mxCell id="a3" value="ValidationBehavior
+[Pipeline: FluentValidation]" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1e88e5;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="735" y="440" width="460" height="130" as="geometry"/></mxCell>
+        <mxCell id="a4" value="Auth Handlers
+RegisterUserCommand · LoginUserCommand
+GetCurrentUserQuery" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1e88e5;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="735" y="590" width="460" height="130" as="geometry"/></mxCell>
+        <mxCell id="a5" value="Book Handlers
+CreateBook · UpdateBook · DeleteBook
+SearchBooks · GetBookById
+DownloadBook · UploadBookFile" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1e88e5;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="735" y="740" width="460" height="130" as="geometry"/></mxCell>
+        <mxCell id="a6" value="Author / Genre / User Handlers
+CRUD + paged queries" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1e88e5;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="735" y="890" width="460" height="130" as="geometry"/></mxCell>
+        <mxCell id="i1" value="AppDbContext  (EF Core)
+7 DbSets · soft-delete filters
+auto-UpdatedAt tracking" style="rounded=1;fillColor=#f3e5f5;strokeColor=#8e24aa;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="1300" y="140" width="430" height="130" as="geometry"/></mxCell>
+        <mxCell id="i2" value="UnitOfWork + Repositories
+IBookRepository
+IUserRepository
+IAuthorRepository
+IGenreRepository
+IBookDownloadRepository" style="rounded=1;fillColor=#f3e5f5;strokeColor=#8e24aa;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="1300" y="290" width="430" height="130" as="geometry"/></mxCell>
+        <mxCell id="i3" value="JwtTokenService
+HMAC-SHA256 · ExpiryInMinutes
+GenerateToken · ValidateToken" style="rounded=1;fillColor=#f3e5f5;strokeColor=#8e24aa;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="1300" y="440" width="430" height="130" as="geometry"/></mxCell>
+        <mxCell id="i4" value="PasswordHashService
+BCrypt work factor 12" style="rounded=1;fillColor=#f3e5f5;strokeColor=#8e24aa;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="1300" y="590" width="430" height="130" as="geometry"/></mxCell>
+        <mxCell id="i5" value="FileStorageService
+.epub only · genre sub-folders" style="rounded=1;fillColor=#f3e5f5;strokeColor=#8e24aa;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="1300" y="740" width="430" height="130" as="geometry"/></mxCell>
+        <mxCell id="i6" value="CurrentUserService
+Reads JWT claims
+from IHttpContextAccessor" style="rounded=1;fillColor=#f3e5f5;strokeColor=#8e24aa;fontColor=#212121;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="1300" y="890" width="430" height="130" as="geometry"/></mxCell>
+        <mxCell id="g10" value="routes to" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="mid7" target="c1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="g11" value="sends command/query" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="c1" target="a1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="g12" value="dispatches" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;fontSize=10;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="a1" target="a4" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="g13" value="uses IUnitOfWork" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;fontSize=10;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="a5" target="i2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

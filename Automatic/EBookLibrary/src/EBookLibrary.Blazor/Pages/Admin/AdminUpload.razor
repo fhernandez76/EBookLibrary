@@ -1,0 +1,93 @@
+@page "/admin/upload"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@inject HttpClient Http
+@inject IStringLocalizer<App> Loc
+
+<PageTitle>@Loc["admin.upload"] — EBook Library</PageTitle>
+
+<h1 class="fw-bold mb-4">@Loc["admin.upload"]</h1>
+
+<div class="card border-0 shadow-sm p-4" style="max-width:480px;">
+    <div class="mb-3">
+        <label class="form-label">Book ID</label>
+        <input type="text" class="form-control" placeholder="Enter book UUID" @bind="_bookId" />
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label">ePub File</label>
+        <InputFile class="form-control" accept=".epub" OnChange="OnFileSelected" />
+        @if (_selectedFile is not null)
+        {
+            <small class="text-muted">Selected: @_selectedFile.Name</small>
+        }
+    </div>
+
+    @if (_success)
+    {
+        <div class="alert alert-success py-2 small">✔ File uploaded successfully</div>
+    }
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert alert-danger py-2 small">@_error</div>
+    }
+
+    <button class="btn btn-primary w-100" @onclick="Upload"
+            disabled="@(_uploading || string.IsNullOrWhiteSpace(_bookId) || _selectedFile is null)">
+        @if (_uploading)
+        {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+        }
+        @Loc["admin.upload"]
+    </button>
+</div>
+
+@code {
+    private string? _bookId;
+    private IBrowserFile? _selectedFile;
+    private bool _uploading;
+    private bool _success;
+    private string? _error;
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        _selectedFile = e.File;
+        _success = false;
+        _error = null;
+    }
+
+    private async Task Upload()
+    {
+        if (_selectedFile is null || string.IsNullOrWhiteSpace(_bookId)) return;
+        _uploading = true;
+        _success = false;
+        _error = null;
+
+        try
+        {
+            using var content = new MultipartFormDataContent();
+            var stream = _selectedFile.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            content.Add(new StreamContent(stream), "file", _selectedFile.Name);
+
+            var response = await Http.PostAsync($"files/books/{_bookId}/upload", content);
+            if (response.IsSuccessStatusCode)
+            {
+                _success = true;
+                _bookId = null;
+                _selectedFile = null;
+            }
+            else
+            {
+                _error = $"Upload failed: {response.StatusCode}";
+            }
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _uploading = false;
+        }
+    }
+}

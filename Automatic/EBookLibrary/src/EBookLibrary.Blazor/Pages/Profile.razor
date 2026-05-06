@@ -1,0 +1,38 @@
+@page "/profile"
+@layout MainLayout
+@attribute [Authorize]
+@inject AuthService AuthSvc
+@inject IStringLocalizer<App> Loc
+
+<PageTitle>@Loc["nav.profile"] — EBook Library</PageTitle>
+
+<h1 class="fw-bold mb-4">@Loc["nav.profile"]</h1>
+
+@if (_user is not null)
+{
+    <div class="card border-0 shadow-sm p-4" style="max-width:500px;">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold"
+                 style="width:56px;height:56px;font-size:1.5rem;">
+                @(_user.FirstName?.FirstOrDefault().ToString().ToUpper() ?? _user.Email[0].ToString().ToUpper())
+            </div>
+            <div>
+                <h5 class="mb-0">
+                    @(!string.IsNullOrWhiteSpace(_user.FirstName) ? $"{_user.FirstName} {_user.LastName}" : _user.Email)
+                </h5>
+                <small class="text-muted">@_user.Email</small>
+                <div>
+                    <span class="badge @(_user.Role == "Admin" ? "bg-danger" : "bg-primary")">@_user.Role</span>
+                </div>
+            </div>
+        </div>
+        <p class="text-muted small">Account details and download history coming soon.</p>
+    </div>
+}
+
+@code {
+    private AuthResponse? _user;
+
+    protected override async Task OnInitializedAsync()
+        => _user = await AuthSvc.GetCurrentUserAsync();
+}

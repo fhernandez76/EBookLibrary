@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="21.0.0">
+  <diagram id="d1" name="Dependency Flow">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" page="1" pageScale="1" pageWidth="1300" pageHeight="600" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="EBook Library — Dependency Flow  (Clean Architecture)" style="rounded=0;fillColor=#1e3a5f;strokeColor=none;fontColor=#ffffff;fontSize=15;fontStyle=1;html=1;align=center;" vertex="1" parent="1"><mxGeometry x="20" y="15" width="1560" height="55" as="geometry"/></mxCell>
+        <mxCell id="p" value="&lt;b&gt;Presentation&lt;/b&gt;&lt;br/&gt;&lt;i&gt;WebApi · Blazor · React&lt;/i&gt;" style="rounded=1;fillColor=#e3f2fd;strokeColor=#1565c0;fontSize=13;fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="50" y="280" width="280" height="120" as="geometry"/></mxCell>
+        <mxCell id="a" value="&lt;b&gt;Application&lt;/b&gt;&lt;br/&gt;&lt;i&gt;CQRS · Validators · DTOs&lt;/i&gt;" style="rounded=1;fillColor=#e8f5e9;strokeColor=#2e7d32;fontSize=13;fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="380" y="280" width="280" height="120" as="geometry"/></mxCell>
+        <mxCell id="d" value="&lt;b&gt;Domain&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Entities · Interfaces&lt;/i&gt;" style="rounded=1;fillColor=#fff9c4;strokeColor=#f9a825;fontSize=13;fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="710" y="280" width="280" height="120" as="geometry"/></mxCell>
+        <mxCell id="i" value="&lt;b&gt;Infrastructure&lt;/b&gt;&lt;br/&gt;&lt;i&gt;EF Core · Services&lt;/i&gt;" style="rounded=1;fillColor=#f3e5f5;strokeColor=#6a1b9a;fontSize=13;fontStyle=0;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="380" y="480" width="280" height="120" as="geometry"/></mxCell>
+        <mxCell id="g10" value="depends on" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;fontSize=9;labelBackgroundColor=#ffffff;" edge="1" source="p" target="a" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="g11" value="depends on" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;fontSize=9;labelBackgroundColor=#ffffff;" edge="1" source="a" target="d" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="g12" value="implements interfaces
+(Dependency Inversion)" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;fontSize=9;labelBackgroundColor=#ffffff;" edge="1" source="i" target="a" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="g13" value="implements interfaces" style="endArrow=block;endFill=1;html=1;strokeColor=#555555;fontSize=9;labelBackgroundColor=#ffffff;" edge="1" source="i" target="d" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="n1" value="Key: Infrastructure does NOT depend on WebApi.
+WebApi does NOT reference Infrastructure directly.
+Dependency Inversion through Interfaces in Domain." style="rounded=1;fillColor=#fff8e1;strokeColor=#f9a825;fontSize=10;html=1;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="750" y="420" width="460" height="80" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

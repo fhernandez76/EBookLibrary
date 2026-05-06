@@ -1,0 +1,43 @@
+@EBookLibrary.WebApi_HostAddress = https://localhost:7096
+
+### Register a new user
+POST {{EBookLibrary.WebApi_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "Test1234!",
+  "firstName": "Test",
+  "lastName": "User"
+}
+
+###
+
+### Login and obtain JWT token
+POST {{EBookLibrary.WebApi_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ebooklibrary.com",
+  "password": "Admin1234!"
+}
+
+###
+
+### List all genres (public)
+GET {{EBookLibrary.WebApi_HostAddress}}/api/genres
+Accept: application/json
+
+###
+
+### List all books (public)
+GET {{EBookLibrary.WebApi_HostAddress}}/api/books
+Accept: application/json
+
+###
+
+### Get a book by ID (replace with a real ID after seeding)
+# GET {{EBookLibrary.WebApi_HostAddress}}/api/books/00000000-0000-0000-0000-000000000000
+# Accept: application/json
+
+###
