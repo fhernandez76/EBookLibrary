@@ -4,6 +4,7 @@
 @inject BookService BookSvc
 @inject HttpClient Http
 @inject IStringLocalizer<App> Loc
+@inject IJSRuntime JS
 
 <PageTitle>@Loc["admin.books"] — EBook Library</PageTitle>
 
@@ -49,6 +50,9 @@
                             <td><span class="badge @(book.Status == "Available" ? "bg-success" : "bg-secondary")">@book.Status</span></td>
                             <td>@(book.HasFile ? "✔" : "—")</td>
                             <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1" title="Copy Book ID" @onclick="() => CopyIdAsync(book.Id)">
+                                    @(_copiedId == book.Id ? "✓" : "⧉")
+                                </button>
                                 <button class="btn btn-sm btn-outline-secondary me-1" @onclick="() => OpenEdit(book)">@Loc["common.edit"]</button>
                                 <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(book.Id, book.Title)">@Loc["common.delete"]</button>
                             </td>
@@ -173,6 +177,8 @@
         public string Language { get; set; } = "English";
     }
 
+    private string? _copiedId;
+
     protected override async Task OnInitializedAsync() => await LoadPage(1);
     private async Task Search() { _currentPage = 1; await LoadPage(1); }
     private async Task GoToPage(int page) { _currentPage = page; await LoadPage(page); }
@@ -229,6 +235,16 @@
     }
 
     private void ConfirmDelete(string id, string title) { _deleteId = id; _deleteTitle = title; }
+
+    private async Task CopyIdAsync(string id)
+    {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", id);
+        _copiedId = id;
+        StateHasChanged();
+        await Task.Delay(1500);
+        if (_copiedId == id) _copiedId = null;
+        StateHasChanged();
+    }
 
     private async Task DeleteAsync()
     {
