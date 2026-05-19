@@ -9,9 +9,52 @@
 <h1 class="fw-bold mb-4">@Loc["admin.upload"]</h1>
 
 <div class="card border-0 shadow-sm p-4" style="max-width:480px;">
+
+    @* Book search / select *@
     <div class="mb-3">
-        <label class="form-label">Book ID</label>
-        <input type="text" class="form-control" placeholder="Enter book UUID" @bind="_bookId" />
+        <label class="form-label">Book</label>
+
+        @if (_selectedBook is not null)
+        {
+            <div class="d-flex align-items-center justify-content-between border rounded p-2 bg-light">
+                <div class="overflow-hidden">
+                    <div class="fw-medium text-truncate">@_selectedBook.Title</div>
+                    <small class="text-muted">@_selectedBook.PrimaryAuthor</small>
+                </div>
+                <button type="button" class="btn btn-sm btn-link text-secondary ms-2" @onclick="ClearBook"
+                        title="Clear selection">✕</button>
+            </div>
+        }
+        else
+        {
+            <div class="position-relative">
+                <input type="text" class="form-control" placeholder="Type a title to search…"
+                       value="@_searchText" @oninput="OnSearchInput" @onfocus="OnSearchFocus" autocomplete="off" />
+                @if (_searchLoading)
+                {
+                    <span class="position-absolute top-50 end-0 translate-middle-y pe-3 text-muted small">Searching…</span>
+                }
+                @if (_searchResults.Count > 0)
+                {
+                    <div class="list-group position-absolute w-100 z-3 shadow-sm" style="top:100%;max-height:224px;overflow-y:auto;">
+                        @foreach (var book in _searchResults)
+                        {
+                            <button type="button" class="list-group-item list-group-item-action py-2"
+                                    @onclick="() => SelectBook(book)">
+                                <div class="fw-medium text-truncate">@book.Title</div>
+                                <small class="text-muted">@book.PrimaryAuthor</small>
+                            </button>
+                        }
+                    </div>
+                }
+                @if (_searchText.Length >= 2 && !_searchLoading && _searchResults.Count == 0)
+                {
+                    <div class="list-group position-absolute w-100 z-3 shadow-sm" style="top:100%;">
+                        <div class="list-group-item text-muted small py-2">No books found.</div>
+                    </div>
+                }
+            </div>
+        }
     </div>
 
     <div class="mb-4">
@@ -25,7 +68,7 @@
 
     @if (_success)
     {
-        <div class="alert alert-success py-2 small">✔ File uploaded successfully</div>
+        <div class="alert alert-success py-2 small">✔ File uploaded successfully.</div>
     }
     @if (!string.IsNullOrWhiteSpace(_error))
     {
@@ -33,7 +76,7 @@
     }
 
     <button class="btn btn-primary w-100" @onclick="Upload"
-            disabled="@(_uploading || string.IsNullOrWhiteSpace(_bookId) || _selectedFile is null)">
+            disabled="@(_uploading || _selectedBook is null || _selectedFile is null)">
         @if (_uploading)
         {
             <span class="spinner-border spinner-border-sm me-2"></span>
@@ -43,11 +86,66 @@
 </div>
 
 @code {
-    private string? _bookId;
+    // ── Book search state ──────────────────────────────────────────
+    private string _searchText = "";
+    private List<BookSummary> _searchResults = [];
+    private bool _searchLoading;
+    private BookSummary? _selectedBook;
+
+    // ── Upload state ───────────────────────────────────────────────
     private IBrowserFile? _selectedFile;
     private bool _uploading;
     private bool _success;
     private string? _error;
+
+    private CancellationTokenSource? _searchCts;
+
+    private async Task OnSearchInput(ChangeEventArgs e)
+    {
+        _searchText = e.Value?.ToString() ?? "";
+        _searchResults = [];
+        _success = false;
+        _error = null;
+
+        if (_searchText.Length < 2) return;
+
+        _searchCts?.Cancel();
+        _searchCts = new CancellationTokenSource();
+        var ct = _searchCts.Token;
+
+        _searchLoading = true;
+        try
+        {
+            await Task.Delay(300, ct);   // debounce
+            var url = $"books/search?title={Uri.EscapeDataString(_searchText)}&pageSize=10";
+            var resp = await Http.GetFromJsonAsync<ApiResponse<PagedResult<BookSummary>>>(url, ct);
+            if (!ct.IsCancellationRequested)
+                _searchResults = resp?.Data?.Items?.ToList() ?? [];
+        }
+        catch (OperationCanceledException) { }
+        finally { _searchLoading = false; }
+    }
+
+    private void OnSearchFocus()
+    {
+        // Re-show results if text is present but user clicked away
+        if (_searchText.Length >= 2 && _searchResults.Count == 0)
+            _ = OnSearchInput(new ChangeEventArgs { Value = _searchText });
+    }
+
+    private void SelectBook(BookSummary book)
+    {
+        _selectedBook = book;
+        _searchText = "";
+        _searchResults = [];
+    }
+
+    private void ClearBook()
+    {
+        _selectedBook = null;
+        _searchText = "";
+        _searchResults = [];
+    }
 
     private void OnFileSelected(InputFileChangeEventArgs e)
     {
@@ -58,7 +156,7 @@
 
     private async Task Upload()
     {
-        if (_selectedFile is null || string.IsNullOrWhiteSpace(_bookId)) return;
+        if (_selectedFile is null || _selectedBook is null) return;
         _uploading = true;
         _success = false;
         _error = null;
@@ -66,15 +164,16 @@
         try
         {
             using var content = new MultipartFormDataContent();
-            var stream = _selectedFile.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            var stream = _selectedFile.OpenReadStream(maxAllowedSize: 100 * 1024 * 1024);
             content.Add(new StreamContent(stream), "file", _selectedFile.Name);
 
-            var response = await Http.PostAsync($"files/books/{_bookId}/upload", content);
+            var response = await Http.PostAsync($"files/books/{_selectedBook.Id}/upload", content);
             if (response.IsSuccessStatusCode)
             {
                 _success = true;
-                _bookId = null;
+                _selectedBook = null;
                 _selectedFile = null;
+                _searchText = "";
             }
             else
             {
@@ -91,3 +190,4 @@
         }
     }
 }
+

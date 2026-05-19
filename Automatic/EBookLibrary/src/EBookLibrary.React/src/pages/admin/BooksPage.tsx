@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useSearchBooks } from '../../hooks/useBooks';
 import Pagination from '../../components/Pagination';
-import { CheckCircle, XCircle, Pencil, Trash2, Plus } from 'lucide-react';
+import { CheckCircle, XCircle, Pencil, Trash2, Plus, Copy, Check, X } from 'lucide-react';
 import type { BookSearchFilter, BookSummary } from '../../types/api';
 import { adminBooksApi, type UpdateBookPayload } from '../../api/adminApi';
 
@@ -32,6 +32,7 @@ export default function BooksPage() {
   const { data, isFetching } = useSearchBooks(filter);
 
   const [modal, setModal] = useState<{ open: boolean; editBook: BookSummary | null }>({ open: false, editBook: null });
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const [form, setForm] = useState<BookForm>(emptyForm());
   const [deleteTarget, setDeleteTarget] = useState<BookSummary | null>(null);
   const [modalError, setModalError] = useState('');
@@ -73,6 +74,12 @@ export default function BooksPage() {
     setModalError(''); setModal({ open: true, editBook: b });
   };
   const closeModal = () => setModal({ open: false, editBook: null });
+
+  const copyId = (id: string) => {
+    navigator.clipboard.writeText(id);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(prev => (prev === id ? null : prev)), 1500);
+  };
 
   return (
     <div>
@@ -123,6 +130,9 @@ export default function BooksPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1">
+                      <button onClick={() => copyId(book.id)} className="p-1 text-gray-400 hover:text-gray-700 transition-colors" title="Copy Book ID">
+                        {copiedId === book.id ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                      </button>
                       <button onClick={() => openEdit(book)} className="p-1 text-gray-400 hover:text-blue-600 transition-colors" title={t('common.edit')}><Pencil className="w-4 h-4" /></button>
                       <button onClick={() => setDeleteTarget(book)} className="p-1 text-gray-400 hover:text-red-600 transition-colors" title={t('common.delete')}><Trash2 className="w-4 h-4" /></button>
                     </div>
@@ -144,8 +154,8 @@ export default function BooksPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b">
-              <h2 className="font-serif font-bold text-lg">{modal.editBook ? t('common.edit') : t('common.add')} â€” {t('admin.books')}</h2>
-              <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">âœ•</button>
+              <h2 className="font-serif font-bold text-lg">{modal.editBook ? t('common.edit') : t('common.add')} — {t('admin.books')}</h2>
+              <button onClick={closeModal} className="text-gray-400 hover:text-gray-600"><X className="w-5 h-5" /></button>
             </div>
             <div className="p-6 space-y-4">
               {modalError && <div className="bg-red-50 text-red-700 rounded-lg p-3 text-sm">{modalError}</div>}

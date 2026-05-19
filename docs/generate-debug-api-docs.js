@@ -528,7 +528,7 @@ const debugSections = [
       ['36', 'Delete a genre',          '/admin/genres',   'Click Delete',                     'Genre removed from list'],
       ['37', 'View all users',          '/admin/users',    'Navigate',                         'Users table with email, role, createdAt'],
       ['38', 'Promote user to Admin',   '/admin/users',    'Click Change Role on regular user', 'Role changes to Admin'],
-      ['39', 'Upload epub file',        '/admin/upload',   'Select book, choose .epub, upload', 'Success message, HasFile = true'],
+      ['39', 'Upload epub file',        '/admin/upload',   'Type title in search box, select book from dropdown, choose .epub, click Upload', 'Success message, HasFile = true'],
       ['40', 'Upload invalid file',     '/admin/upload',   'Choose .pdf or .txt file',         'Error: only .epub accepted'],
     ]
   ),
